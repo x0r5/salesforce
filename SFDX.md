@@ -12,6 +12,31 @@ Visual Studio Code: Salesforce Extension Pack
 1. **Ctrl + Shift + P**
 2. SFDX: Authorize an org
 
+### Common Workflow !!!
+1. `sfdx:force:project:create -n <projectName>`
+2. `sfdx force:auth:web:login --setalias <alias> --instanceurl <domain>.my.salesforce.com --setdefaultusername`
+3. `sfdx force:org:create -s -f config/project-scratch-def.json` [create scratch org]
+4. `sfdx force:org:open` [opens the scratch org]
+5. `sfdx force:source:pull` [pull the changes made on the scratch org]
+6. `sfdx force:apex:class:create -n <name>` [create changes locally]
+7. `sfdx force:source:push` [push the changes backc to the scratch org]
+8. `sfdx force:source:convert -d mdapiout` [convert source to MDAPI format]
+9. `sfdx force:mdapi:deploy -d mdapiout --wait 100 -u <alias>` [deploy the main org]
++ include `**profiles` to `.forceignore` (dont pull not existing profiles)
+
+### Install Required Packages
+1. `sfdx force:package:install -i 04t36000000i5UM --wait 100`
+
+### Import / Export Data Between Orgs
+1. `force:data:soql:query -q "SELECT Waypoint_Name__c FROM Waypoints__c"` [test data soql query]
+2. `sfdx force:data:tree:export -q "SELECT Waypoint_Name__c FROM Waypoints__c" -p -d data` [export to JSON the data]
+3. `sfdx force:data:tree:import -p data/Waypoint__c-plan.json -u <alias>` [import to main org]
+
+### Executing Anonymus Apex Code
+1. create folder `scripts`
+2. create `anonymus.apex` file
+3. `sfdx force:apex:execute -f scripts/anonymus.apex -u <alias>` [execute on the `alias` org]
+
 
 ### Other SFDX commands
 > Use with **Ctrl + Shift + P**
@@ -19,7 +44,6 @@ Visual Studio Code: Salesforce Extension Pack
 - SFDX: Create a Default Scratch Org
 - SFDX: Open Default Org
 - SFDX: Pull Source from Default Scratch Org
-
 
 ### Deploy
 1. Right click on the right the component you want to deploy
@@ -37,7 +61,7 @@ Use: [Apex Interactive Debugger](https://developer.salesforce.com/tools/vscode/a
 - `sfdx force:project:create -n [name]`
 - `sfdx force:apex:class:create -n [ClassName] -d force-app/main/[location]`
 - `sfdx force:org:create -f config/project-scratch-def.json -a GeoTestOrg`
-- sfdx `force:org:open -u GeoTestOrg`
+- `sfdx force:org:open -u GeoTestOrg`
 
 
 ### SFDX Manage Orgs

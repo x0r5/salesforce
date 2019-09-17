@@ -18,6 +18,23 @@
 - Minor: Limited changes
 - Major: Changes with dependencies
 
+### Environments
+- Sandbox - Copy of the production org
+- Scratch Org - Empty Org
+
+### Change Set Development Model
+1. Developer Sandboxes: Isolated
+2. Create Outbound Change Set
+3. Developer Pro Sandbox
+4. Deployment to Production Org: Validation
+
+### Org Development
+- Source Control Repository
+- Salesforce DX Project
+    - Config file: `sfdx-project.json`
+    - Deployment Artifact: `.zip`
+- Salesforce CLI
+
 ### Package Development Model
 - Salesforce DX Package
 - Skratch Orgs - declarative development
