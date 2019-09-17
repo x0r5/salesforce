@@ -1,6 +1,9 @@
 # Salesforce CLI
 Visual Studio Code: Salesforce Extension Pack
 
+#### Good to know:
+Scratch orgs have change tracking. You should use a scratch org to push and pull changes to an from. After it is working as it should, you can deploy your changes with `mdapi:deploy`.
+
 ### SFDX
 > **Ctrl + Shift + P**
 >
