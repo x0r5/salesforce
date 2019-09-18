@@ -1,8 +1,12 @@
 Navigation: [Apex](Apex.md) | [SFDX](SFDX.md) | [ALM](ALM.md)
 # Apex
 
+Content:
+- [Apex Triggers](#triggers)
+- [Asynchronous Apex](#async)
 
-### Apex Triggers
+
+## Apex Triggers <a name='triggers'></a>
 [Reference](https://developer.salesforce.com/docs/atlas.en-us.220.0.apexcode.meta/apexcode/apex_triggers.htm)
 - Usage:
 ```Apex
@@ -60,3 +64,27 @@ trigger AddRelatedRecord on Account(after insert, after update) {
 
 - Note:
 >The system saves the records that fired the before trigger after the trigger finishes execution. You can modify the records in the trigger without explicitly calling a DML insert or update operation. If you perform DML statements on those records, you get an error.
+
+
+## Asynchronous Apex <a name='async'></a>
+### Future Apex
+Must be: `static` and `void`
+
+Example
+```Java
+public class SMSUtils {
+    // Call async from triggers, etc, where callouts are not permitted.
+    @future(callout=true)
+    public static void sendSMSAsync(String fromNbr, String toNbr, String m) {
+        String results = sendSMS(fromNbr, toNbr, m);
+        System.debug(results);
+    }
+    // Call from controllers, etc, for immediate processing
+    public static String sendSMS(String fromNbr, String toNbr, String m) {
+        // Calling 'send' will result in a callout
+        String results = SmsMessage.send(fromNbr, toNbr, m);
+        insert new SMS_Log__c(to__c=toNbr, from__c=fromNbr, msg__c=results);
+        return results;
+    }
+}
+```
