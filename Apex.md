@@ -125,3 +125,35 @@ Id batchId = Database.executeBatch(myBatchObject, 100); //batch size can be pass
 ### Queuable Apex
 Monitoring: `System.enqueueJob`<br>
 Chaining Jobs
+
+Skeleton:
+```Java
+public class SomeClass implements Queueable { 
+    public void execute(QueueableContext context) {
+        // awesome code here
+    }
+}
+```
+Example:
+```Java
+public class UpdateParentAccount implements Queueable {
+    
+    private List<Account> accounts;
+    private ID parent;
+    
+    public UpdateParentAccount(List<Account> records, ID id) {
+        this.accounts = records;
+        this.parent = id;
+    }
+    public void execute(QueueableContext context) {
+        for (Account account : accounts) {
+          account.parentId = parent;
+          // perform other processing or callout
+        }
+        update accounts;
+    }
+    
+}
+
+
+```
