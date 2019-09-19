@@ -4,6 +4,7 @@ Navigation: [Apex](Apex.md) | [SFDX](SFDX.md) | [ALM](ALM.md)
 Content:
 - [Apex Triggers](#triggers)
 - [Asynchronous Apex](#async)
+- 
 
 
 ## Apex Triggers <a name='triggers'></a>
@@ -88,3 +89,39 @@ public class SMSUtils {
     }
 }
 ```
+### Batch Apex
+Implement `Database.Batchable` interface and methods:
+- **start**
+    - `Database.QueryLocator` or `Iterable` object is returned
+    - max 50 million records with the QueryLocator
+- **execute**
+    - processing for each batch (200 record)
+    - asynchronous execution
+    - arguments:
+        - `Database.BatchableContext`
+        - `List<sObject>`
+- **finish**
+    - called after all batches finished: post-processing
+
+Skeleton code:
+```Java
+global class MyBatchClass implements Database.Batchable<sObject> {
+    global (Database.QueryLocator | Iterable<sObject>) start(Database.BatchableContext bc) {
+        // collect the batches of records or objects to be passed to execute
+    }
+    global void execute(Database.BatchableContext bc, List<P> records){
+        // process each batch of records
+    }    
+    global void finish(Database.BatchableContext bc){
+        // execute any post-processing operations
+    }    
+}
+// execution:
+MyBatchClass myBatchObject = new MyBatchClass(); 
+Id batchId = Database.executeBatch(myBatchObject, 100); //batch size can be passed also
+```
+
+
+### Queuable Apex
+Monitoring: `System.enqueueJob`<br>
+Chaining Jobs
