@@ -17,17 +17,37 @@ Scratch orgs have change tracking. You should use a scratch org to push and pull
 - SFDX: Open Default Org
 - SFDX: Pull Source from Default Scratch Org
 
+### Config files
+- sfdx-project.json
+    - Dev org specifications, like url:
+        - `"sfdcLoginUrl": "https://<mydomain>.my.salesforce.com",`
+- config/project-scratch-def.json
+    - Scratch org configurations
+- .sfdx/sfdx-config.json
+    - sfdx default username
+        - `"defaultusername": "test-flmrj2vuvhoc@example.com"`
+
+
 ### Common Workflow !!!
-1. `sfdx:force:project:create -n <projectName>`
-2. `sfdx force:auth:web:login --setalias <alias> --instanceurl <domain>.my.salesforce.com --setdefaultusername`
-3. `sfdx force:org:create -f config/project-scratch-def.json -a myUserAlias` [create scratch org]
-4. `sfdx force:org:open` [opens the scratch org]
-5. `sfdx force:source:pull` [pull the changes made on the scratch org]
-6. `sfdx force:apex:class:create -n <name>` [create changes locally]
-7. `sfdx force:source:push` [push the changes backc to the scratch org]
-8. `sfdx force:source:convert -d mdapiout` [convert source to MDAPI format]
-9. `sfdx force:mdapi:deploy -d mdapiout --wait 100 -u <alias>` [deploy the main org with MDAPI]
-+ include `**profiles` to `.forceignore` (dont pull not existing profiles)
+1. Create a project
+    - `sfdx:force:project:create -n <projectName>`
+2. Authenticate a **Dev Org**
+    - `sfdx force:auth:web:login --setalias <alias Dev Org> --instanceurl <domain>.my.salesforce.com --setdefaultusername`
+3. Create a **Scratch Org**
+    - `sfdx force:org:create -f config/project-scratch-def.json -a myUserAlias`
+4. Open the **Scratch Org**
+    - `sfdx force:org:open`
+5. Pull the changes made on the **Scratch Org**
+    - include `**profiles` to `.forceignore` (dont pull not existing profiles)
+    - `sfdx force:source:pull`
+6. Create changes locally
+    - `sfdx force:apex:class:create -n <name>`
+7. Push the changes backc to the **Scratch Org**
+    - `sfdx force:source:push`
+8. Convert source to MDAPI format
+    - `sfdx force:source:convert -d mdapiout`
+9. Deploy to the **Dev Org** with MDAPI
+    - `sfdx force:mdapi:deploy -d mdapiout --wait 100 -u <alias Dev Org>`
 
 ### Install Required Packages
 1. `sfdx force:package:install -i 04t36000000i5UM --wait 100`
