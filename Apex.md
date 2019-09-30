@@ -1,4 +1,4 @@
-Navigation: [Apex](Apex.md) | [SFDX](SFDX.md) | [ALM](ALM.md)
+Navigation: [Apex](Apex.md) | [SFDX](SFDX.md) | [ALM](ALM.md) | [Visualforce](Visualforce.md) | [Lightning Flow](Lightning_Flow.md) | [HOME](README.md)
 # Apex
 
 Content:

@@ -1,5 +1,13 @@
 # Salesforce CLI
-Visual Studio Code: Salesforce Extension Pack
+Salesforce Developer Console (SFDX) and Visual Studio Code Salesforce Extension Pack
+
+Contents:
+- [Config Files](#config_files)
+- [Project Structure](#project_structure)
+- [Usernames and Orgs](#usernames_orgs)
+- [Common Workflow](#common_workflow)
+- [Creating Project or Parts](#creating)
+- [Move Data Between Orgs](#move_data)
 
 #### Good to know:
 Scratch orgs have change tracking. You should use a scratch org to push and pull changes to an from. After it is working as it should, you can deploy your changes with `mdapi:deploy`.
@@ -17,20 +25,77 @@ Scratch orgs have change tracking. You should use a scratch org to push and pull
 - SFDX: Open Default Org
 - SFDX: Pull Source from Default Scratch Org
 
-### Config files
+### Config Files<a name="config_files"></a>
 - sfdx-project.json
     - Dev org specifications, like url:
         - `"sfdcLoginUrl": "https://<mydomain>.my.salesforce.com",`
+```json
+{ 
+"packageDirectories" : [ 
+    { "path": "force-app", "default": true}, 
+    { "path" : "unpackaged" }, 
+    { "path" : "utils" } 
+  ],
+"namespace": "", 
+"sfdcLoginUrl" : "https://login.salesforce.com", 
+"sourceApiVersion": "44.0"
+}
+```
 - config/project-scratch-def.json
     - Scratch org configurations
+```json
+{
+  "orgName": "Acme",
+  "country": "US",
+  "edition": "Enterprise",
+  "hasSampleData": "true",
+  "features": ["MultiCurrency", "AuthorApex"],
+  "orgPreferences": {
+    "enabled": ["S1DesktopEnabled", "ChatterEnabled"],
+    "disabled": ["IsNameSuffixEnabled"]
+  }
+}
+```
 - .sfdx/sfdx-config.json
-    - sfdx default username
+    - sfdx default username for scratch org
         - `"defaultusername": "test-flmrj2vuvhoc@example.com"`
 
+### SFDX Project Structure and Source Format <a name="project_structure"></a>
+**Metadata** format is large and uncontrollable -> Break it down to **source format**
+Subdirectory tree system
+- Static resources
+    - `/main/default/staticresources`
+    - .resource extension is used ()
+    - `.resource-meta.xml`
+- File Extensions
+    - converting to Source Format creates <filename>-meta.xml files
+- Custom Objects
+    - `/main/default/objects`
 
-### Common Workflow !!!
+### Usernames and Orgs <a name="usernames_orgs"></a>
+- username -> determines an Org
+- alias: short version of a username
+- Dev HUB: `--setdefaultdevhubusername`
+- Scratch Org: `--setdefaultusername`
+- `sfdx force:org:list`
+    - Default Dev HUB: (D)
+    - Default Scratch Org: (U)
+- `--targetusername <username or alias>` to deploy not to the default Scratch org
+- `--targetdevhubusername <username or alias>` to deploy to a diff. Dev Org
+- Set default DevHUB or Scratch Org:
+    - `sfdx force:config:set defaultdevhubusername=<username or alias>`
+    - `sfdx force:config:set defaultusername=<username or alias of scratch org>`
+- Set an  alias:
+    - `sfdx force:alias:set <myalias>=<username>`
+- Remove an alias:
+    - `sfdx force:alias:set <myalias>=`
+    
+
+
+
+### Common Workflow !!! <a name="common_workflow"></a>
 1. Create a project
-    - `sfdx:force:project:create -n <projectName>`
+    - `sfdx force:project:create -n <projectName>`
 2. Authenticate a **Dev Org**
     - `sfdx force:auth:web:login --setalias <alias Dev Org> --instanceurl <domain>.my.salesforce.com --setdefaultusername`
 3. Create a **Scratch Org**
@@ -49,10 +114,15 @@ Scratch orgs have change tracking. You should use a scratch org to push and pull
 9. Deploy to the **Dev Org** with MDAPI
     - `sfdx force:mdapi:deploy -d mdapiout --wait 100 -u <alias Dev Org>`
 
+### Creating a new project or class <a name="creating"></a>
+- `force:project:create -n <projectname> --template standard`
+    - template standard is better for VS Code
+- `sfdx force:apex:class:create -n <ClassName> -d force-app/main/<location>`
+
 ### Install Required Packages
 1. `sfdx force:package:install -i 04t36000000i5UM --wait 100`
 
-### Import / Export Data Between Orgs
+### Import / Export Data Between Orgs <a name="move_data"></a>
 1. `force:data:soql:query -q "SELECT Waypoint_Name__c FROM Waypoints__c"` [test data soql query]
 2. `sfdx force:data:tree:export -q "SELECT Waypoint_Name__c FROM Waypoints__c" -p -d data` [export to JSON the data]
 3. `sfdx force:data:tree:import -p data/Waypoint__c-plan.json -u <alias>` [import to main org]
@@ -69,11 +139,7 @@ Use: [Apex Interactive Debugger](https://developer.salesforce.com/tools/vscode/a
 `"features": "DebugApex"`
 
 
-### Creating a new project
-- `sfdx force:project:create -n [name]`
-- `sfdx force:apex:class:create -n [ClassName] -d force-app/main/[location]`
-- `sfdx force:org:create -f config/project-scratch-def.json -a GeoTestOrg`
-- `sfdx force:org:open -u GeoTestOrg`
+
 
 
 ### SFDX Manage Orgs
@@ -85,7 +151,15 @@ Use: [Apex Interactive Debugger](https://developer.salesforce.com/tools/vscode/a
 - `sfdx force:source:push`
 
 
-### SFDX Pull from Dev Org
-- `sfdx force:mdapi:retrieve -s -r ./mdapipkg -u <username> -p <package name>`
+### SFDX Retrive from Dev Org
+- With Package Name
+    - `sfdx force:mdapi:retrieve -s -r ./mdapipkg -u <username> -p <package name>`
+        - username or alias of the target org
+        - -s: retriving a single package
+- With `package.xml`
+    - `sfdx force:mdapi:retrieve -r ./mdapipkg -u <username> -k ./package.xml`
+        - package.xml: unpackaged manifest of components to retrive
+- Convert Metadata Source to Source Format
+    - `sfdx force:mdapi:convert --rootdir mdapi_project --outputdir tmp_convert`
 - `sfdx force:mdapi:retrieve:report`
 - `unzip`
