@@ -23,3 +23,25 @@ Example
     </apex:form>
 </apex:page>
 ```
+
+
+## Ligthning Web Components
+HTML + JS [+ CSS]
+```js
+// import module elements
+import { LightningElement, track } from 'lwc';
+// declare class to expose the component
+export default class App extends LightningElement {
+
+// add decorator   
+    @track 
+    ready = false;
+
+// use lifecycle hook
+    connectedCallback() {
+        setTimeout(() => {
+            this.ready = true;
+        }, 3000);
+    }
+}
+```
