@@ -5,8 +5,66 @@
         - Live org.
     - Sandbox
         - Clone of configuration metadata (code and customizations)
+        - Developer / Developer Pro Sandboxes
         - Full / Partial Copy sandboxes with real data for testing
         - test.salesforce.com
     - Developer: dev org
         - Develop custom code directly, for the App Exchange
         - developer.salesforce.com/signup
+
+- Setup UI Navigation
+    - Administer
+    - Build
+    - Deploy
+        - Create and manage Sandboxes
+    - Monitor
+
+- Structure of Data
+    - Instance / Org
+    - Object
+    - Record
+    - Field
+
+- Objects
+    - Standard Objects
+        - Account: Firm
+        - Contact: person
+        - Activity (Task, Event)
+        - User
+        - Record Type
+    - Standard CRM Objects
+        - Lead: person who could potentially become a Contact with an Account
+        - Opportunity: Potential business deal in the making
+            - Opportunity Line Items: links with Products in Pricebook
+        - Case: Customer initiated contact attempt
+    - Custom Objects
+    - Custom Settings: Available Globally
+    - Custom Metadata: Configures the charactheristics of the instance (data)
+        - Configuration Settings
+    - Default Fields
+        - Name
+        - CreatedBy
+        - Currency
+        - LastModifiedBy
+        - Owner
+        - Address
+        - RelatedTo
+        - Geolocation
+        - AutoNumber
+        - Formula
+        - Roll-Upp-Summary
+    - Relation Fields
+        - Lookup Relationship: weak link, not manadatory to fill
+        - Master Detail Relationship
+            - max 2 / object (Junction object)
+            - The Detail inherits the Master's Security and Sharing options
+            - Detail doesn't have an Owner field
+            - Cascade delete all the Detail objects with the Master
+            - Standard Objects can only be Masters !
+- Security: Sharing Model
+    - Starting at the Org-Wide Defaults
+        - Private (to Owner)
+        - Public Read-Only
+        - Public Read/Write
+    - Roles
+    - Public Groups

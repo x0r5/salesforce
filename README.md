@@ -2,6 +2,7 @@
 Salesforce Development Code Snippets and Notes
 
 ### Parts
+- [Basics](Basics.md)
 - [Apex](Apex.md)
 - [Salesforce DX Console](SFDX.md)
 - [Application Lifecycle Management](ALM.md)
