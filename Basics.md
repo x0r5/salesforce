@@ -1,0 +1,12 @@
+# Salesforce Basics
+- Instances / Organisations
+- Categories:
+    - Production
+        - Live org.
+    - Sandbox
+        - Clone of configuration metadata (code and customizations)
+        - Full / Partial Copy sandboxes with real data for testing
+        - test.salesforce.com
+    - Developer: dev org
+        - Develop custom code directly, for the App Exchange
+        - developer.salesforce.com/signup

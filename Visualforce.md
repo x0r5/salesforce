@@ -4,8 +4,8 @@ Features
 - Visualforce standard controller
 
 Example
-```Java
-<apex:page standardController="Contact" >
+```html
+<apex:page standardStylesheets="false" standardController="Contact" >
     <apex:form >
         
         <apex:pageBlock title="Edit Contact">
@@ -24,8 +24,22 @@ Example
 </apex:page>
 ```
 
+## Global variables
+$User.FirstName ..
+$
+
+## Standard Controllers
+<apex:page standardController="Account">
+Name: {! Account.Name }
+
 
 ## Ligthning Web Components
+
+Lightning Experience contains Lightning Elements
++ app-centric model
++ Out-of-the-Box Component Set
++ Build with: Lightning Web Components model or Aura Components
+
 HTML + JS [+ CSS]
 ```js
 // import module elements

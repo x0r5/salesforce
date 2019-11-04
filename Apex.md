@@ -154,6 +154,17 @@ public class UpdateParentAccount implements Queueable {
     }
     
 }
+```
 
-
+## Apex Properties <a name='properties'></a>
+two code blocks:
+- The code in a get accessor executes when the property is read.
+- The code in a set accessor executes when the property is assigned a new value.
+```java
+public class BasicProperty {
+   public integer prop {
+      get { return prop; }
+      set { prop = value; }
+   }
+}
 ```
