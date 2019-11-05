@@ -67,4 +67,13 @@
         - Public Read-Only
         - Public Read/Write
     - Roles
-    - Public Groups
+    - Public Groups for Sharing Rules (to expose records)
+    - Profiles: Configure User specific profiles (login, org-wide defs.)
+    - Permission Sets ('miniprofiles', gran additional access beyond profiles)
+    - Field-Level security
+- Validation Levels
+    - Database: correct type, checkbox, unique, (display fatal error on save)
+    - Layout Based: record specific required fields
+        - Do not apply to users with "Modify all", if field level security allows them to edit
+    - Validation Rules: disp. validation error (business rules)
+

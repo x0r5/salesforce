@@ -33,7 +33,7 @@ $
 Name: {! Account.Name }
 
 
-## Ligthning Web Components
+# Ligthning Web Components
 
 Lightning Experience contains Lightning Elements
 + app-centric model
