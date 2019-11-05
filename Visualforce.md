@@ -40,22 +40,39 @@ Lightning Experience contains Lightning Elements
 + Out-of-the-Box Component Set
 + Build with: Lightning Web Components model or Aura Components
 
+XML:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+   <apiVersion>45.0</apiVersion>
+   <isExposed>true</isExposed>
+   <targets>
+       <target>lightning__AppPage</target>
+       <target>lightning__RecordPage</target>
+       <target>lightning__HomePage</target>
+   </targets>
+</LightningComponentBundle>
+```
+
+HTML:
+```html
+<template>
+    <lightning-card title="HelloWorld" icon-name="custom:custom14">
+        <div class="slds-m-around_medium">
+            <p>Hello, {greeting}!</p>
+            <lightning-input label="Name" value={greeting} onchange={changeHandler}></lightning-input>
+        </div>
+    </lightning-card>
+</template>
+```
+
 HTML + JS [+ CSS]
 ```js
-// import module elements
 import { LightningElement, track } from 'lwc';
-// declare class to expose the component
-export default class App extends LightningElement {
-
-// add decorator   
-    @track 
-    ready = false;
-
-// use lifecycle hook
-    connectedCallback() {
-        setTimeout(() => {
-            this.ready = true;
-        }, 3000);
+export default class HelloWorld extends LightningElement {
+    @track greeting = 'Soma';
+    changeHandler(event) {
+        this.greeting = event.target.value;
     }
 }
 ```
