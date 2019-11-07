@@ -95,6 +95,15 @@ Parts:
 - `@api`: Marks a property as public for use in your template or other components.
 - `@wire`: Gives you a way to get and bind data.
 
+## Wire Service to get Salesforce Data
+- wire adapter is needed
+- wire decorator for a function or property
+```js
+import { adapterId } from 'adapter-module';
+@wire(adapterId, adapterConfig)
+propertyOrFunction;
+```
+
 ## Component Lifecycle Hooks
 - Created: 
 - Added to the DOM: `connectedCallback()`

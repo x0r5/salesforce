@@ -10,3 +10,4 @@ Salesforce Development Code Snippets and Notes
 - [Lightning APIs](Lightning_API.md)
 - [Metadata API](Metadata_API.md)
 - [Visualforce](Visualforce.md)
+- [JavaScript](Javascript.md)
