@@ -12,3 +12,4 @@ Knowledge collected mostly from Trailhead and Salesforce Developer Documentation
 - [Metadata API](Metadata_API.md)
 - [Visualforce and Lightning Web Components](Visualforce.md)
 - [JavaScript](Javascript.md)
+- [Git](Git.md)
