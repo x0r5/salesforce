@@ -138,6 +138,11 @@ Use: [Apex Interactive Debugger](https://developer.salesforce.com/tools/vscode/a
 1. Add the DebugApex feature to the scratch org definition files for all the types of scratch orgs that you plan to debug:
 `"features": "DebugApex"`
 
+### Package Create and Install
+1. `sfdx force:package:version:create --definitionfile config/project-scratch-def.json -p [package alias / id] -k [key] --wait 100 -v [target DEV HUB username] -b [branch name (for easier identification)]`
+2. `sfdx force:package:version:list -v [DEV HUB username] -o "CreatedDate"` Check package ID in list
+3. `sfdx force:package:install --wait 100 --publishwait 100 --package [package ID] -k [key] -r -u [where to install org alias]`
+
 
 
 
