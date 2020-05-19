@@ -157,3 +157,135 @@ export default class Tile extends LightningElement {
     }
 }
 ```
+
+## Code Snippets
+### Wire SF function to get data
+```js
+const columns = [
+    { label: 'Name', fieldName: 'Name', type: 'text' },
+    { label: 'Active', fieldName: 'Active__c', type: 'boolean', 
+        "cellAttributes": {
+        "iconName": { "fieldName": "Active__c_chk" },
+        "iconPosition": "left"
+    }},
+];
+export default class FilterCases extends LightningElement{
+    @wire(getBlacklist)
+        wiredBlacklist( result ) {
+            this.wiredBlacklistResult = result;
+            if(result.data){
+                this.errorBlacklist = undefined;
+                console.log(result.data);
+                let _data = [];
+                for(let row of result.data){
+                    _data.push(Object.assign({},row));
+                }
+                this.blacklist = _data;
+
+            } else if(result.error){
+                this.errorBlacklist = result.error;
+                this.blacklist = undefined;
+                console.log(result.error);
+            }
+        }
+
+    saveMethod(){
+        if(this.inputKeyword){
+            addKeyword({keyword: this.inputKeyword, active: this.inputCheckbox, type: this.type, description: this.inputDescription})
+            .then(() => {
+                this.showSuccessNotification('Successfully created / updated record');
+                if(this.type == 'blacklist'){
+                    refreshApex(this.wiredBlacklistResult);
+                }
+                else{
+                    refreshApex(this.wiredWhitelistResult);
+                }
+            }).catch((error) => {
+             this.showErrorNotification(error);
+            });
+            this.openmodel = false;
+            window.location.reload();
+            
+        }else{
+            console.log('no keyword');
+        }
+    }
+}
+```
+```java
+@AuraEnabled(cacheable=true)
+    public static List<Social_Blacklist__c> getBlacklist(){
+        Map<String, Social_Blacklist__c> blacklist_map = Social_Blacklist__c.getAll();
+        return blacklist_map.values();
+
+    }
+```
+
+```html
+<template>
+<lightning-card>
+    <lightning-button-group>
+    <lightning-button label="Create New Rule" title="Create New Rule" onclick={createNew}></lightning-button>
+    <lightning-button label="Edit Selected Row" onclick={editRow}></lightning-button>
+    <lightning-button label="Run Rules on Open Cases" onclick={runRules}></lightning-button>
+</lightning-button-group>
+</lightning-card>
+<lightning-card>
+<lightning-tabset class="tabset">
+ <lightning-tab label="Blacklist" onactive={handleActiveBlacklist}>
+    <template if:true={blacklist}>
+        <lightning-datatable
+                class="blacklist"
+                key-field="name"
+                data={blacklist}
+                columns={columns}
+                max-row-selection=1>
+        </lightning-datatable>
+        </template>
+        
+        
+        <template if:true={errorBlacklist}>
+        <h1>Error happened</h1>
+        {errorBlacklist}
+        </template>
+
+    </lightning-tab>
+  </lightning-tabset>
+</lightning-card>
+
+
+<template if:true={openmodel}>
+    <div class="demo-only" style="height: 640px;">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" size="medium">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Új {type} Szabály</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    
+                        <div class="slds-m-around_medium">
+                            <template if:true={postidActive}>
+                                <lightning-input type="text" label="Description" onchange={handleDescriptionChange} value={inputDescription}></lightning-input>
+                            </template>
+                            <lightning-input type="text" label="keyword" onchange={handleKeywordChange} value={inputKeyword}></lightning-input>
+                            <lightning-input type="checkbox" label="active" onchange={handleCheckboxChange} checked={inputCheckbox}></lightning-input>
+                            <lightning-button label="save" onclick={saveMethod}></lightning-button>
+
+                                
+                            </div>
+
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" variant="brand" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</template>
+```
